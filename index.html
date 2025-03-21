@@ -90,12 +90,16 @@
 	<canvas id='canvas' style='display:"block"'></canvas>
 	<script type="text/javascript" src="script.js" width='1000px' height='1000px'></script>
 	<script>
-  fetch('https://api.github.com/repos/erbemirbe/block-game/releases/latest')
-    .then(response => response.json())
-    .then(data => {
-      document.getElementById('version').innerText = data.tag_name;
-    })
-    .catch(error => console.error('Error fetching version:', error));
+  fetch('https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/tags')
+  .then(response => response.json())
+  .then(data => {
+    if (data.length > 0) {
+      document.getElementById('version').innerText = data[0].name; // Latest tag
+    } else {
+      document.getElementById('version').innerText = 'No tags found';
+    }
+  })
+  .catch(error => console.error('Error fetching version:', error));
 </script>
 <p>Current Version: <span id="version">Loading...</span></p>
 </body>
