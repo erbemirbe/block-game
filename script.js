@@ -1,6 +1,16 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
+// Fix for high-DPI screens (e.g., iOS)
+function fixDPI() {
+    let dpi = window.devicePixelRatio || 1;
+    let styleHeight = +getComputedStyle(canvas).getPropertyValue("height").slice(0, -2);
+    let styleWidth = +getComputedStyle(canvas).getPropertyValue("width").slice(0, -2);
+    canvas.width = styleWidth * dpi;
+    canvas.height = styleHeight * dpi;
+    ctx.scale(dpi, dpi);
+}
+
 // Grid settings
 const gridSize = 50; // Size of each square
 const gridWidth = 20;
@@ -120,8 +130,9 @@ function snapToGrid(instaSnap = false) {
 
 // Resize and initialize
 function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+    fixDPI();
     drawGrid();
 }
 window.addEventListener("resize", resizeCanvas);
