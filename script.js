@@ -6,23 +6,25 @@ const gridSize = 50; // Size of each square
 const gridWidth = 20;
 const gridHeight = 20;
 
-// Camera position (starts at 0,0 but will be centered on the special square)
-let cameraX = 0;
-let cameraY = 0;
+// Camera position (centered on the special square initially)
+let cameraX = Math.floor(gridWidth / 2) * gridSize;
+let cameraY = Math.floor(gridHeight / 2) * gridSize;
 
 // Touch tracking
 let startX, startY;
 let isDragging = false;
 let isHorizontal = null;
 
-// Generate grid squares with random hues
+// Generate grid squares with random hues (only 10% of the grid is populated)
 const squares = [];
 const specialSquare = { x: Math.floor(gridWidth / 2), y: Math.floor(gridHeight / 2) };
 
 for (let i = 0; i < gridWidth; i++) {
     for (let j = 0; j < gridHeight; j++) {
         if (i === specialSquare.x && j === specialSquare.y) continue;
-        squares.push({ x: i, y: j, hue: Math.random() * 360 });
+        if (Math.random() < 0.1) { // 10% chance to populate a square
+            squares.push({ x: i, y: j, hue: Math.random() * 360 });
+        }
     }
 }
 
@@ -52,6 +54,7 @@ function drawGrid() {
 
 // Touch handling
 canvas.addEventListener("touchstart", (event) => {
+    snapToGrid(true); // Instantly snap before dragging again
     const touch = event.touches[0];
     startX = touch.clientX;
     startY = touch.clientY;
@@ -87,9 +90,16 @@ canvas.addEventListener("touchend", () => {
 });
 
 // Smooth snap-to-grid function
-function snapToGrid() {
+function snapToGrid(instaSnap = false) {
     const targetX = Math.round(cameraX / gridSize) * gridSize;
     const targetY = Math.round(cameraY / gridSize) * gridSize;
+    
+    if (instaSnap) {
+        cameraX = targetX;
+        cameraY = targetY;
+        drawGrid();
+        return;
+    }
     
     function animate() {
         cameraX += (targetX - cameraX) * 0.2;
