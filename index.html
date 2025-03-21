@@ -81,7 +81,11 @@
             display: block; /* Removes extra space below inline elements */
             width: 100vw;
             height: 100vh;
+             -webkit-touch-callout: none; /* Disable callout (like copy/paste) */
+		    -webkit-user-select: none; /* Disable text selection */
+		    user-select: none;
         }
+
 	</style>
 	<canvas id='canvas' style='display:"block"'></canvas>
 	<script type="text/javascript" src="script.js" width='1000px' height='1000px'></script>
