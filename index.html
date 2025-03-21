@@ -89,5 +89,14 @@
 	</style>
 	<canvas id='canvas' style='display:"block"'></canvas>
 	<script type="text/javascript" src="script.js" width='1000px' height='1000px'></script>
+	<script>
+  fetch('https://api.github.com/repos/erbemirbe/block-game/releases/latest')
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById('version').innerText = data.tag_name;
+    })
+    .catch(error => console.error('Error fetching version:', error));
+</script>
+<p>Current Version: <span id="version">Loading...</span></p>
 </body>
 </html>
