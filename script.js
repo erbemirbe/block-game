@@ -110,9 +110,9 @@ function snapToGrid() {
 
 // Resize and initialize
 function resizeCanvas() {
-    canvas.width = window.innerWidth -100;
-    canvas.height = window.innerHeight-100;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     drawGrid();
 }
 window.addEventListener("resize", resizeCanvas);
-// resizeCanvas();
+resizeCanvas();
