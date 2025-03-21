@@ -12,20 +12,20 @@ function fixDPI() {
 }
 
 // Grid settings
-const gridSize = 50; // Size of each square
+const gridSize = 64; // Increased block size
 const gridWidth = 20;
 const gridHeight = 20;
 
 // Camera position (centered on the special square initially)
-let cameraX = Math.floor(gridWidth / 2) * gridSize;
-let cameraY = Math.floor(gridHeight / 2) * gridSize;
+let cameraX = (Math.floor(gridWidth / 2) * gridSize) - (canvas.width / 2 - gridSize / 2);
+let cameraY = (Math.floor(gridHeight / 2) * gridSize) - (canvas.height / 2 - gridSize / 2);
 
 // Touch tracking
 let startX, startY;
 let isDragging = false;
 let isHorizontal = null;
 
-// Generate grid squares with random hues (only 10% of the grid is populated)
+// Generate grid squares with random light hues (only 10% of the grid is populated)
 const squares = [];
 const specialSquare = { x: Math.floor(gridWidth / 2), y: Math.floor(gridHeight / 2) };
 
@@ -42,8 +42,18 @@ for (let i = 0; i < gridWidth; i++) {
 function drawGrid() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
+    // Draw grid lines
+    for (let i = 0; i <= gridWidth; i++) {
+        for (let j = 0; j <= gridHeight; j++) {
+            let x = (i * gridSize) - cameraX + canvas.width / 2 - gridSize / 2;
+            let y = (j * gridSize) - cameraY + canvas.height / 2 - gridSize / 2;
+            ctx.strokeStyle = "rgba(200, 200, 200, 0.5)";
+            ctx.strokeRect(x, y, gridSize, gridSize);
+        }
+    }
+    
     squares.forEach(square => {
-        ctx.fillStyle = `hsl(${square.hue}, 80%, 50%)`;
+        ctx.fillStyle = `hsl(${square.hue}, 80%, 80%)`; // Lighter colors
         ctx.fillRect(
             (square.x * gridSize) - cameraX + canvas.width / 2 - gridSize / 2,
             (square.y * gridSize) - cameraY + canvas.height / 2 - gridSize / 2,
@@ -52,8 +62,8 @@ function drawGrid() {
         );
     });
     
-    // Draw the distinct center square
-    ctx.fillStyle = "red";
+    // Draw the distinct center square (black)
+    ctx.fillStyle = "black";
     ctx.fillRect(
         canvas.width / 2 - gridSize / 2,
         canvas.height / 2 - gridSize / 2,
