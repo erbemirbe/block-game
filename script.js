@@ -52,6 +52,7 @@ function drawGrid() {
 
 // Touch handling
 canvas.addEventListener("touchstart", (event) => {
+    preventDefault();
     const touch = event.touches[0];
     startX = touch.clientX;
     startY = touch.clientY;
